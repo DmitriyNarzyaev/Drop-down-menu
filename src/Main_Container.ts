@@ -1,0 +1,144 @@
+import Container = PIXI.Container;
+import { Graphics, TextStyle } from "pixi.js";
+import Button from "./Button";
+
+export default class Main_Container extends Container {
+	public static readonly WIDTH:number = 3000;
+	public static readonly HEIGHT:number = 1500;
+	private _contentContainer:PIXI.Container;
+	private _buttonsContainer:PIXI.Container;
+	private _subButtonsContainer:PIXI.Container;
+	private _startButtonNames:string[] = [
+		"button one",
+		"button two",
+		"button three",
+		"button four",
+		"button five",
+		"button six",
+	];
+	private _subButtonOneNames:string[] = [
+		"sub 1 - 1",
+		"sub 1 - 2",
+		"sub 1 - 3",
+	]
+	private _subButtonTwoNames:string[] = [
+		"sub 2 - 1",
+		"sub 2 - 2",
+		"sub 2 - 3",
+		"sub 2 - 4",
+		"sub 2 - 5",
+	]
+	private _subButtonThreeNames:string[] = [
+		"sub 3 - 1",
+		"sub 3 - 2",
+	]
+
+	constructor() {
+		super();
+		this.initialBackground();
+			this._buttonsContainer = new PIXI.Container;
+			this.addChild(this._buttonsContainer);
+		this.initialButtons(this._buttonsContainer, this._startButtonNames, false);
+		this.initialContent("press button");
+	}
+
+	private initialBackground():void {
+		let background: Graphics = new Graphics;
+		background.beginFill(0x00ff48);
+		background.drawRect(0, 0, Main_Container.WIDTH, Main_Container.HEIGHT);
+		this.addChild(background);
+	}
+	
+	private initialContent(content:string):void {
+		const gap:number = 50;
+		this._contentContainer = new PIXI.Container;
+		this.addChild(this._contentContainer);
+
+		let contentBackground:PIXI.Graphics = new PIXI.Graphics;
+		contentBackground
+			.beginFill(0x0000ff, .2)
+			.drawRect(0, 0, Main_Container.WIDTH/2, Main_Container.HEIGHT);
+			this._contentContainer.addChild(contentBackground);
+			this._contentContainer.x = Main_Container.WIDTH/2;
+
+		let textStyle:TextStyle = new PIXI.TextStyle ({
+            fontFamily: 'Arial',
+            fontSize: 50,
+            fontWeight: 'bold',
+            fill: ['#000000'],
+        });
+
+		const contentText:PIXI.Text = new PIXI.Text (content, textStyle);
+        contentText.x = gap;
+        contentText.y = gap;
+        this._contentContainer.addChild(contentText);
+	}
+
+	private removeContent():void {
+		this.removeChild(this._contentContainer);
+	}
+
+	private initialButtons(container:PIXI.Container, buttonNames:string[], sub:boolean):void {
+		const buttonGap:number = 10;
+		let buttonX;
+		let buttonY:number = 50;
+		if (sub) {
+			buttonX = 410;
+		} else {
+			buttonX = 50;
+		}
+
+		for (let i:number = 0; i<buttonNames.length; i++) {
+			let button:Button = new Button(
+				buttonNames[i],
+				() => {this.buttonClickFunctions(button.buttonName);},
+				() => {this.buttonMouseOverFunctions(button.buttonName);},
+				() => {this.buttonMouseOutFunctions(button.buttonName);},
+			);
+			button.x = buttonX;
+			button.y = buttonY;
+			container.addChild(button);
+			buttonY += button.height + buttonGap;
+		}
+	}
+
+	private buttonClickFunctions(buttonName:string):void {
+		this.removeContent();
+		this.initialContent(buttonName);
+	}
+
+	private buttonMouseOverFunctions(buttonName:string):void {
+		console.log("over " + buttonName);
+		
+		if (buttonName == "button one") {
+			this.buttonOneFunction();
+		} else if (buttonName == "button two") {
+			this.buttonTwoFunction();
+		} else if (buttonName == "button three") {
+			this.buttonThreeFunction();
+		}
+	}
+
+	private buttonMouseOutFunctions(buttonName:string):void {
+		console.log("out " + buttonName);
+		this.removeChild(this._subButtonsContainer);
+	}
+
+	private buttonOneFunction():void {
+		this._subButtonsContainer = new PIXI.Container;
+		this.addChild(this._subButtonsContainer);
+		this.initialButtons(this._subButtonsContainer, this._subButtonOneNames, true);
+	}
+
+	private buttonTwoFunction():void {
+		this._subButtonsContainer = new PIXI.Container;
+		this.addChild(this._subButtonsContainer);
+		this.initialButtons(this._subButtonsContainer, this._subButtonTwoNames, true);
+	}
+
+	private buttonThreeFunction():void {
+		this._subButtonsContainer = new PIXI.Container;
+		this.addChild(this._subButtonsContainer);
+		this.initialButtons(this._subButtonsContainer, this._subButtonThreeNames, true);
+	}	
+}
