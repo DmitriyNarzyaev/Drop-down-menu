@@ -25,8 +25,9 @@ export default class Button extends Container {
 
         this._button = new PIXI.Graphics;
         this._button
+            .lineStyle(1, 0x000000, 1)
             .beginFill(0x228866)
-            .drawRect(0, 0, 360, 100);
+            .drawRect(0, 0, 300, 70);
         this._button.interactive = true;
         this._button.buttonMode = true;
         this.addChild(this._button);

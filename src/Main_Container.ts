@@ -3,8 +3,8 @@ import { Graphics, TextStyle } from "pixi.js";
 import Button from "./Button";
 
 export default class Main_Container extends Container {
-	public static readonly WIDTH:number = 3000;
-	public static readonly HEIGHT:number = 1500;
+	public static readonly WIDTH:number = 1500;
+	public static readonly HEIGHT:number = 800;
 	private _contentContainer:PIXI.Container;
 	private _buttonsContainer:PIXI.Container;
 	private _subButtonsContainer:PIXI.Container;
@@ -58,8 +58,8 @@ export default class Main_Container extends Container {
 		contentBackground
 			.beginFill(0x0000ff, .2)
 			.drawRect(0, 0, Main_Container.WIDTH/2, Main_Container.HEIGHT);
-			this._contentContainer.addChild(contentBackground);
-			this._contentContainer.x = Main_Container.WIDTH/2;
+		this._contentContainer.addChild(contentBackground);
+		this._contentContainer.x = Main_Container.WIDTH/2;
 
 		let textStyle:TextStyle = new PIXI.TextStyle ({
             fontFamily: 'Arial',
@@ -79,11 +79,10 @@ export default class Main_Container extends Container {
 	}
 
 	private initialButtons(container:PIXI.Container, buttonNames:string[], sub:boolean):void {
-		const buttonGap:number = 10;
 		let buttonX;
 		let buttonY:number = 50;
 		if (sub) {
-			buttonX = 410;
+			buttonX = 351;
 		} else {
 			buttonX = 50;
 		}
@@ -98,7 +97,7 @@ export default class Main_Container extends Container {
 			button.x = buttonX;
 			button.y = buttonY;
 			container.addChild(button);
-			buttonY += button.height + buttonGap;
+			buttonY += button.height;
 		}
 	}
 
