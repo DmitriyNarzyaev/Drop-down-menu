@@ -22,14 +22,16 @@ export default class Button extends Container {
         this._mouseOverCallback = mouseOverCallback;
         this._mouseOutCallback = mouseOutCallback;
         this.buttonName = buttonName;
+        this.interactive = true;
+        this.buttonMode = true;
 
         this._button = new PIXI.Graphics;
         this._button
-            .lineStyle(1, 0x000000, 1)
+            .lineStyle(1, 0x000000, 1, 0)
             .beginFill(0x228866)
             .drawRect(0, 0, 300, 70);
-        this._button.interactive = true;
-        this._button.buttonMode = true;
+        // this._button.interactive = true;
+        // this._button.buttonMode = true;
         this.addChild(this._button);
 
         this._textStyle = new PIXI.TextStyle ({
@@ -45,15 +47,15 @@ export default class Button extends Container {
         this._button.addChild(buttonText);
 
         if (clickCallback) {
-			this._button.addListener('pointertap', this.pointerTabHandler, this);
+			this.addListener('pointertap', this.pointerTabHandler, this);
 		}
 
         if (mouseOverCallback) {
-			this._button.addListener('mouseover', this.mouseOverHandler, this);
+			this.addListener('mouseover', this.mouseOverHandler, this);
 		}
 
         if (mouseOutCallback) {
-			this._button.addListener('mouseout', this.mouseOutHandler, this);
+			this.addListener('mouseout', this.mouseOutHandler, this);
 		}
 	}
 

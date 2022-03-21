@@ -80,9 +80,9 @@ export default class Main_Container extends Container {
 
 	private initialButtons(container:PIXI.Container, buttonNames:string[], sub:boolean):void {
 		let buttonX;
-		let buttonY:number = 50;
+		let buttonY:number = 0;
 		if (sub) {
-			buttonX = 351;
+			buttonX = 300;
 		} else {
 			buttonX = 50;
 		}
@@ -90,54 +90,54 @@ export default class Main_Container extends Container {
 		for (let i:number = 0; i<buttonNames.length; i++) {
 			let button:Button = new Button(
 				buttonNames[i],
-				() => {this.buttonClickFunctions(button.buttonName);},
-				() => {this.buttonMouseOverFunctions(button.buttonName);},
-				() => {this.buttonMouseOutFunctions(button.buttonName);},
+				() => {this.buttonClickFunctions(button);},
+				() => {this.buttonMouseOverFunctions(button);},
+				() => {this.buttonMouseOutFunctions(button);},
 			);
 			button.x = buttonX;
 			button.y = buttonY;
 			container.addChild(button);
-			buttonY += button.height;
+			buttonY += button.height - 1;
 		}
 	}
 
-	private buttonClickFunctions(buttonName:string):void {
+	private buttonClickFunctions(button:Button):void {
 		this.removeContent();
-		this.initialContent(buttonName);
+		this.initialContent(button.buttonName);
 	}
 
-	private buttonMouseOverFunctions(buttonName:string):void {
-		console.log("over " + buttonName);
+	private buttonMouseOverFunctions(button:Button):void {
+		console.log("over " + button.buttonName);
 		
-		if (buttonName == "button one") {
-			this.buttonOneFunction();
-		} else if (buttonName == "button two") {
-			this.buttonTwoFunction();
-		} else if (buttonName == "button three") {
-			this.buttonThreeFunction();
+		if (button.buttonName == "button one") {
+			this.buttonOneFunction(button);
+		} else if (button.buttonName == "button two") {
+			this.buttonTwoFunction(button);
+		} else if (button.buttonName == "button three") {
+			this.buttonThreeFunction(button);
 		}
 	}
 
-	private buttonMouseOutFunctions(buttonName:string):void {
-		console.log("out " + buttonName);
-		this.removeChild(this._subButtonsContainer);
+	private buttonMouseOutFunctions(button:Button):void {
+		console.log("out " + button.buttonName);
+		button.removeChild(this._subButtonsContainer);
 	}
 
-	private buttonOneFunction():void {
+	private buttonOneFunction(button:Button):void {
 		this._subButtonsContainer = new PIXI.Container;
-		this.addChild(this._subButtonsContainer);
+		button.addChild(this._subButtonsContainer);
 		this.initialButtons(this._subButtonsContainer, this._subButtonOneNames, true);
 	}
 
-	private buttonTwoFunction():void {
+	private buttonTwoFunction(button:Button):void {
 		this._subButtonsContainer = new PIXI.Container;
-		this.addChild(this._subButtonsContainer);
+		button.addChild(this._subButtonsContainer);
 		this.initialButtons(this._subButtonsContainer, this._subButtonTwoNames, true);
 	}
 
-	private buttonThreeFunction():void {
+	private buttonThreeFunction(button:Button):void {
 		this._subButtonsContainer = new PIXI.Container;
-		this.addChild(this._subButtonsContainer);
+		button.addChild(this._subButtonsContainer);
 		this.initialButtons(this._subButtonsContainer, this._subButtonThreeNames, true);
 	}	
 }
