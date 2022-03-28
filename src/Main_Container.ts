@@ -8,7 +8,6 @@ export default class Main_Container extends Container {
 	private _contentContainer:PIXI.Container;
 	private _buttonsContainer:PIXI.Container;
 	private _subButtonsContainer:PIXI.Container;
-	private _buttonsArray:Button[] = []
 	private _startButtonNames:string[] = [
 		"button one",
 		"button two",
@@ -82,7 +81,11 @@ export default class Main_Container extends Container {
 	private initialButtons(container:PIXI.Container, buttonNames:string[], sub:boolean):void {
 		let buttonX;
 		let buttonY:number = 0;
-		sub? buttonX = 300 : buttonX = 50;
+		if (sub) {
+			buttonX = 300;
+		} else {
+			buttonX = 50;
+		}
 
 		for (let i:number = 0; i<buttonNames.length; i++) {
 			let button:Button = new Button(
@@ -95,16 +98,12 @@ export default class Main_Container extends Container {
 			button.y = buttonY;
 			container.addChild(button);
 			buttonY += button.height - 1;
-			if (!sub) {
-				this._buttonsArray.push(button);
-			}
 		}
 	}
 
 	private buttonClickFunctions(button:Button):void {
 		this.removeContent();
 		this.initialContent(button.buttonName);
-		console.log("click " + button.buttonName);									//FIXME
 	}
 
 	private buttonMouseOverFunctions(button:Button):void {
@@ -120,7 +119,7 @@ export default class Main_Container extends Container {
 	}
 
 	private buttonMouseOutFunctions(button:Button):void {
-		//console.log("out " + button.buttonName);
+		console.log("out " + button.buttonName);
 		button.removeChild(this._subButtonsContainer);
 	}
 
