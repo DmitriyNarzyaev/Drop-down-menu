@@ -1,36 +1,61 @@
 import Container = PIXI.Container;
 import { Graphics, TextStyle } from "pixi.js";
 import Button from "./Button";
+import Content from "./Content";
 
 export default class Main_Container extends Container {
-	public static readonly WIDTH:number = 1500;
-	public static readonly HEIGHT:number = 800;
+	public static readonly WINDOW_WIDTH:number = window.outerWidth;
+	public static readonly WINDOW_HEIGHT:number = window.innerHeight;
 	private _contentContainer:PIXI.Container;
 	private _buttonsContainer:PIXI.Container;
 	private _subButtonsContainer:PIXI.Container;
+	private _buttonWidth:number = window.outerWidth/4.5;
+	private _buttonHeight:number = this._buttonWidth/5;
 	private _startButtonNames:string[] = [
-		"button one",
-		"button two",
-		"button three",
-		"button four",
-		"button five",
-		"button six",
+		"Империум",
+		"Эльдар",
+		"Империя Тау",
+		"Хаос",
+		"Орки",
+		"Некроны"
 	];
-	private _subButtonOneNames:string[] = [
-		"sub 1 - 1",
-		"sub 1 - 2",
-		"sub 1 - 3",
+	private _subButtonOneNames:string[] = [		//Империум
+		"Калдор Драйго",
+		"Кайафас Каин",
+		"Стракен",
+		"Данте"
+		
 	]
-	private _subButtonTwoNames:string[] = [
-		"sub 2 - 1",
-		"sub 2 - 2",
-		"sub 2 - 3",
-		"sub 2 - 4",
-		"sub 2 - 5",
+	private _subButtonTwoNames:string[] = [		//Эльдар
+		"Эльдрад Ультран",
+		"Джайн Зар",
+		"Мауган Ра",
+		"Иврайна"
 	]
-	private _subButtonThreeNames:string[] = [
-		"sub 3 - 1",
-		"sub 3 - 2",
+	private _subButtonThreeNames:string[] = [	//Тау
+		"Эль'Миямото",
+		"О'Шасерра",
+		"Фарсайт"
+	]
+	private _subButtonFourNames:string[] = [	//Хаос
+		"Игнатий Грульгор",
+		"Калас Тифон",
+		"Некрозий",
+		"Джихар",
+		"Кхарн"
+	]
+
+	private _subButtonFiveNames:string[] = [	//Орки
+		"Грог Железнозуб",
+		"Ваздакка Гуцмек",
+		"Красный Гоббо",
+		"Док Гротсник"
+	]
+
+	private _subButtonSixNames:string[] = [	//Некроны
+		"Иллюминор Серас",
+		"Анракир",
+		"Орикан"
 	]
 
 	constructor() {
@@ -45,7 +70,7 @@ export default class Main_Container extends Container {
 	private initialBackground():void {
 		let background: Graphics = new Graphics;
 		background.beginFill(0x00ff48);
-		background.drawRect(0, 0, Main_Container.WIDTH, Main_Container.HEIGHT);
+		background.drawRect(0, 0, Main_Container.WINDOW_WIDTH, Main_Container.WINDOW_HEIGHT);
 		this.addChild(background);
 	}
 	
@@ -57,21 +82,25 @@ export default class Main_Container extends Container {
 		let contentBackground:PIXI.Graphics = new PIXI.Graphics;
 		contentBackground
 			.beginFill(0x0000ff, .2)
-			.drawRect(0, 0, Main_Container.WIDTH/2, Main_Container.HEIGHT);
+			.drawRect(0, 0, Main_Container.WINDOW_WIDTH/2, Main_Container.WINDOW_HEIGHT);
 		this._contentContainer.addChild(contentBackground);
-		this._contentContainer.x = Main_Container.WIDTH/2;
+		this._contentContainer.x = Main_Container.WINDOW_WIDTH/2;
 
 		let textStyle:TextStyle = new PIXI.TextStyle ({
             fontFamily: 'Arial',
-            fontSize: 50,
-            fontWeight: 'bold',
+            fontSize: contentBackground.width/25,
             fill: ['#000000'],
+			align: 'left'
         });
 
-		const contentText:PIXI.Text = new PIXI.Text (content, textStyle);
+		let textContent:string = Content.initialText(content);
+		const contentText:PIXI.Text = new PIXI.Text (textContent, textStyle);
         contentText.x = gap;
         contentText.y = gap;
+		contentText.style.wordWrap = true;
+		contentText.style.wordWrapWidth = contentBackground.width  - gap;
         this._contentContainer.addChild(contentText);
+		console.log("content button " + contentText as string);
 	}
 
 	private removeContent():void {
@@ -80,15 +109,18 @@ export default class Main_Container extends Container {
 
 	private initialButtons(container:PIXI.Container, buttonNames:string[], sub:boolean):void {
 		let buttonX;
-		let buttonY:number = 0;
+		let buttonY:number = Main_Container.WINDOW_HEIGHT/40;
 		if (sub) {
-			buttonX = 300;
+			buttonX = this._buttonWidth-1;
+			buttonY = 0;
 		} else {
-			buttonX = 50;
+			buttonX = Main_Container.WINDOW_WIDTH/60;
 		}
 
 		for (let i:number = 0; i<buttonNames.length; i++) {
 			let button:Button = new Button(
+				this._buttonWidth,
+				this._buttonHeight,
 				buttonNames[i],
 				() => {this.buttonClickFunctions(button);},
 				() => {this.buttonMouseOverFunctions(button);},
@@ -104,22 +136,29 @@ export default class Main_Container extends Container {
 	private buttonClickFunctions(button:Button):void {
 		this.removeContent();
 		this.initialContent(button.buttonName);
+		console.log("click button " + button.buttonName);
 	}
 
 	private buttonMouseOverFunctions(button:Button):void {
-		console.log("over " + button.buttonName);
+		//console.log("over " + button.buttonName);
 		
-		if (button.buttonName == "button one") {
+		if (button.buttonName == this._startButtonNames[0]) {
 			this.buttonOneFunction(button);
-		} else if (button.buttonName == "button two") {
+		} else if (button.buttonName == this._startButtonNames[1]) {
 			this.buttonTwoFunction(button);
-		} else if (button.buttonName == "button three") {
+		} else if (button.buttonName == this._startButtonNames[2]) {
 			this.buttonThreeFunction(button);
+		} else if (button.buttonName == this._startButtonNames[3]) {
+			this.buttonFourFunction(button);
+		} else if (button.buttonName == this._startButtonNames[4]) {
+			this.buttonFiveFunction(button);
+		} else if (button.buttonName == this._startButtonNames[5]) {
+			this.buttonSixFunction(button);
 		}
 	}
 
 	private buttonMouseOutFunctions(button:Button):void {
-		console.log("out " + button.buttonName);
+		//console.log("out " + button.buttonName);
 		button.removeChild(this._subButtonsContainer);
 	}
 
@@ -139,5 +178,23 @@ export default class Main_Container extends Container {
 		this._subButtonsContainer = new PIXI.Container;
 		button.addChild(this._subButtonsContainer);
 		this.initialButtons(this._subButtonsContainer, this._subButtonThreeNames, true);
-	}	
+	}
+
+	private buttonFourFunction(button:Button):void {
+		this._subButtonsContainer = new PIXI.Container;
+		button.addChild(this._subButtonsContainer);
+		this.initialButtons(this._subButtonsContainer, this._subButtonFourNames, true);
+	}
+
+	private buttonFiveFunction(button:Button):void {
+		this._subButtonsContainer = new PIXI.Container;
+		button.addChild(this._subButtonsContainer);
+		this.initialButtons(this._subButtonsContainer, this._subButtonFiveNames, true);
+	}
+
+	private buttonSixFunction(button:Button):void {
+		this._subButtonsContainer = new PIXI.Container;
+		button.addChild(this._subButtonsContainer);
+		this.initialButtons(this._subButtonsContainer, this._subButtonSixNames, true);
+	}
 }
