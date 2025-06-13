@@ -64,7 +64,7 @@ export default class Main_Container extends Container {
 			this._buttonsContainer = new PIXI.Container;
 			this.addChild(this._buttonsContainer);
 		this.initialButtons(this._buttonsContainer, this._startButtonNames, false);
-		this.initialContent("press button");
+		this.initialContent("");
 	}
 
 	private initialBackground():void {
@@ -98,7 +98,7 @@ export default class Main_Container extends Container {
         contentText.x = gap;
         contentText.y = gap;
 		contentText.style.wordWrap = true;
-		contentText.style.wordWrapWidth = contentBackground.width  - gap;
+		contentText.style.wordWrapWidth = contentBackground.width  - gap*2;
         this._contentContainer.addChild(contentText);
 		console.log("content button " + contentText as string);
 	}
@@ -125,6 +125,7 @@ export default class Main_Container extends Container {
 				() => {this.buttonClickFunctions(button);},
 				() => {this.buttonMouseOverFunctions(button);},
 				() => {this.buttonMouseOutFunctions(button);},
+				() => {this.buttonTouchFunctions(button);}
 			);
 			button.x = buttonX;
 			button.y = buttonY;
@@ -140,8 +141,17 @@ export default class Main_Container extends Container {
 	}
 
 	private buttonMouseOverFunctions(button:Button):void {
-		//console.log("over " + button.buttonName);
-		
+		this.startSubButtonFunction(button);
+	}
+
+	private buttonMouseOutFunctions(button:Button):void {
+		button.removeChild(this._subButtonsContainer);
+	}
+
+	private buttonTouchFunctions(button:Button):void {
+	}
+
+	private startSubButtonFunction(button:Button):void {
 		if (button.buttonName == this._startButtonNames[0]) {
 			this.buttonOneFunction(button);
 		} else if (button.buttonName == this._startButtonNames[1]) {
@@ -155,11 +165,6 @@ export default class Main_Container extends Container {
 		} else if (button.buttonName == this._startButtonNames[5]) {
 			this.buttonSixFunction(button);
 		}
-	}
-
-	private buttonMouseOutFunctions(button:Button):void {
-		//console.log("out " + button.buttonName);
-		button.removeChild(this._subButtonsContainer);
 	}
 
 	private buttonOneFunction(button:Button):void {

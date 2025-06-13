@@ -7,6 +7,7 @@ export default class Button extends Container {
     private readonly _clickCallback:()=>void;
     private readonly _mouseOverCallback:()=>void;
     private readonly _mouseOutCallback:()=>void;
+    private readonly _touchCallback:()=>void;
     public buttonWidth:number;
     public buttonHenght:number;
     public buttonName:string;
@@ -17,12 +18,14 @@ export default class Button extends Container {
             buttonName:string,
             clickCallback:()=>void = null,
             mouseOverCallback:()=>void = null,
-            mouseOutCallback:()=>void = null
+            mouseOutCallback:()=>void = null,
+            touchCallback:()=>void = null
         ){
 		super();
         this._clickCallback = clickCallback;
         this._mouseOverCallback = mouseOverCallback;
         this._mouseOutCallback = mouseOutCallback;
+        this._touchCallback = touchCallback;
         this.buttonWidth = buttonWidth;
         this.buttonHenght = buttonHeight;
         this.buttonName = buttonName;
@@ -51,6 +54,7 @@ export default class Button extends Container {
 
         if (clickCallback) {
 			this._background.addListener('pointertap', this.pointerTabHandler, this);
+			//this._background.addListener('touchstart', this.pointerTabHandler, false);
 		}
 
         if (mouseOverCallback) {
@@ -59,6 +63,10 @@ export default class Button extends Container {
 
         if (mouseOutCallback) {
 			this.addListener('mouseout', this.mouseOutHandler, this);
+		}
+
+        if (touchCallback) {
+			this.addListener('touchstart', this.mouseTouchCallback, this);
 		}
 	}
 
@@ -76,5 +84,9 @@ export default class Button extends Container {
 		this._mouseOutCallback();
         this._background.tint = (0xffffff);
         this._textStyle.fill = '#000000'
+	}
+
+    private mouseTouchCallback():void {
+		this._touchCallback();
 	}
 }
