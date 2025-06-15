@@ -30,7 +30,7 @@ export default class Main_Container extends Container {
 		"Эльдрад Ультран",
 		"Джайн Зар",
 		"Мауган Ра",
-		"Иврайна"
+		"Амаллин"
 	]
 	private _subButtonThreeNames:string[] = [	//Тау
 		"Эль'Миямото",
