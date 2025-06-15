@@ -38,7 +38,7 @@ export default class Main_Container extends Container {
 		"Фарсайт"
 	]
 	private _subButtonFourNames:string[] = [	//Хаос
-		"Игнатий Грульгор",
+		"Эзекиль Абаддон",
 		"Калас Тифон",
 		"Некрозий",
 		"Джихар",
