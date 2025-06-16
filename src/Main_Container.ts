@@ -48,8 +48,8 @@ export default class Main_Container extends Container {
 	private _subButtonFiveNames:string[] = [	//Орки
 		"Грог Железнозуб",
 		"Ваздакка Гуцмек",
-		"Красный Гоббо",
-		"Док Гротсник"
+		"Док Гротсник",
+		"Снагрод"
 	]
 
 	private _subButtonSixNames:string[] = [	//Некроны
