@@ -1,5 +1,5 @@
 import Container = PIXI.Container;
-import { Graphics, TextStyle } from "pixi.js";
+import { Graphics, Loader, Sprite, TextStyle } from "pixi.js";
 import Button from "./Button";
 import Content from "./Content";
 
@@ -11,6 +11,10 @@ export default class Main_Container extends Container {
 	private _subButtonsContainer:PIXI.Container;
 	private _buttonWidth:number = window.outerWidth/4.5;
 	private _buttonHeight:number = this._buttonWidth/5;
+
+	private _draigoImage:Sprite;
+
+
 	private _startButtonNames:string[] = [
 		"Империум",
 		"Эльдар",
@@ -60,6 +64,19 @@ export default class Main_Container extends Container {
 
 	constructor() {
 		super();
+		this.pictureLoader();
+	}
+
+	private pictureLoader():void {
+		const loader:Loader = new Loader();
+		loader.add("draigoImage", "draigo.jpg");
+		loader.load((loader, resources)=> {
+				this.startProject();
+		});
+		loader.load();
+	}
+
+	private startProject():void {
 		this.initialBackground();
 			this._buttonsContainer = new PIXI.Container;
 			this.addChild(this._buttonsContainer);
@@ -92,6 +109,9 @@ export default class Main_Container extends Container {
             fill: ['#000000'],
 			align: 'left'
         });
+
+		this._draigoImage = Sprite.from("draigoImage");
+		this._contentContainer.addChild(this._draigoImage);
 
 		let textContent:string = Content.initialText(content);
 		const contentText:PIXI.Text = new PIXI.Text (textContent, textStyle);
