@@ -12,62 +12,22 @@ export default class Main_Container extends Container {
 	private _buttonWidth:number = window.outerWidth/4.5;
 	private _buttonHeight:number = this._buttonWidth/5;
 
-	private _draigoImage:Sprite;
+	private _draigoImage:Sprite;		//TEST
 
-
-	private _startButtonNames:string[] = [
-		"Империум",
-		"Эльдар",
-		"Империя Тау",
-		"Хаос",
-		"Орки",
-		"Некроны"
-	];
-	private _subButtonOneNames:string[] = [		//Империум
-		"Калдор Драйго",
-		"Кайафас Каин",
-		"Стракен",
-		"Данте"
-		
-	]
-	private _subButtonTwoNames:string[] = [		//Эльдар
-		"Эльдрад Ультран",
-		"Джайн Зар",
-		"Мауган Ра",
-		"Амаллин"
-	]
-	private _subButtonThreeNames:string[] = [	//Тау
-		"Эль'Миямото",
-		"О'Шасерра",
-		"Фарсайт"
-	]
-	private _subButtonFourNames:string[] = [	//Хаос
-		"Эзекиль Абаддон",
-		"Калас Тифон",
-		"Некрозий",
-		"Джихар",
-		"Кхарн"
-	]
-
-	private _subButtonFiveNames:string[] = [	//Орки
-		"Грог Железнозуб",
-		"Ваздакка Гуцмек",
-		"Док Гротсник",
-		"Снагрод"
-	]
-
-	private _subButtonSixNames:string[] = [	//Некроны
-		"Иллюминор Серас",
-		"Анракир",
-		"Орикан"
-	]
+	private _startButtonNames:string[] = ["Империум", "Эльдар", "Империя Тау", "Хаос", "Орки", "Некроны"];
+	private _subButtonOneNames:string[] = ["Калдор Драйго", "Кайафас Каин", "Стракен", "Данте"	]				//Империум
+	private _subButtonTwoNames:string[] = ["Эльдрад Ультран", "Джайн Зар", "Мауган Ра", "Амаллин" ]				//Эльдар
+	private _subButtonThreeNames:string[] = ["Эль'Миямото", "О'Шасерра", "Фарсайт"]								//Тау
+	private _subButtonFourNames:string[] = ["Эзекиль Абаддон", "Калас Тифон", "Некрозий", "Джихар", "Кхарн"]	//Хаос
+	private _subButtonFiveNames:string[] = ["Грог Железнозуб", "Ваздакка Гуцмек", "Док Гротсник", "Снагрод"]	//Орки
+	private _subButtonSixNames:string[] = ["Иллюминор Серас", "Анракир", "Орикан"]								//Некроны
 
 	constructor() {
 		super();
 		this.pictureLoader();
 	}
 
-	private pictureLoader():void {
+	private pictureLoader():void {						//TEST
 		const loader:Loader = new Loader();
 		loader.add("draigoImage", "draigo.jpg");
 		loader.load((loader, resources)=> {
@@ -168,7 +128,7 @@ export default class Main_Container extends Container {
 		button.removeChild(this._subButtonsContainer);
 	}
 
-	private buttonTouchFunctions(button:Button):void {
+	private buttonTouchFunctions(button:Button):void {					//TEST
 	}
 
 	private startSubButtonFunction(button:Button):void {
