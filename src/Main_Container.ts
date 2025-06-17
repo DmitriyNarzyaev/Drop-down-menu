@@ -12,7 +12,7 @@ export default class Main_Container extends Container {
 	private _buttonWidth:number = window.outerWidth/4.5;
 	private _buttonHeight:number = this._buttonWidth/5;
 
-	private _draigoImage:Sprite;		//TEST
+	private _personageImage:Sprite;		//TEST
 
 	private _startButtonNames:string[] = ["Империум", "Эльдар", "Империя Тау", "Хаос", "Орки", "Некроны"];
 	private _subButtonOneNames:string[] = ["Калдор Драйго", "Кайафас Каин", "Стракен", "Данте"	]				//Империум
@@ -29,7 +29,7 @@ export default class Main_Container extends Container {
 
 	private pictureLoader():void {						//TEST
 		const loader:Loader = new Loader();
-		loader.add("draigoImage", "draigo.jpg");
+		loader.add("Калдор Драйго", "draigo.jpg");
 		loader.load((loader, resources)=> {
 				this.startProject();
 		});
@@ -70,8 +70,11 @@ export default class Main_Container extends Container {
 			align: 'left'
         });
 
-		this._draigoImage = Sprite.from("draigoImage");
-		this._contentContainer.addChild(this._draigoImage);
+		this._personageImage = Sprite.from(content);
+		this._contentContainer.addChild(this._personageImage);
+		let standartWidth = this._personageImage.width;
+		this._personageImage.width = contentBackground.width/5;
+		this._personageImage.height /=  standartWidth/this._personageImage.width;
 
 		let textContent:string = Content.initialText(content);
 		const contentText:PIXI.Text = new PIXI.Text (textContent, textStyle);
