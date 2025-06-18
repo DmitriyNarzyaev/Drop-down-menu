@@ -30,6 +30,25 @@ export default class Main_Container extends Container {
 	private pictureLoader():void {						//TEST
 		const loader:Loader = new Loader();
 		loader.add("Калдор Драйго", "draigo.jpg");
+		loader.add("Кайафас Каин", "kain.png");
+		loader.add("Стракен", "straken.jpg");
+		loader.add("Данте", "dante.jpg");
+
+		loader.add("Эльдрад Ультран", "ultran.jpg");
+		loader.add("Джайн Зар", "jainzar.jpg");
+		loader.add("Мауган Ра", "mauganra.png");
+		loader.add("Амаллин", "amallyn.jpg");
+
+		loader.add("Эль'Миямото", "elmyamoto.jpg");
+		loader.add("О'Шасерра", "oshaserra.png");
+		loader.add("Фарсайт", "farsight.jpg");
+
+		loader.add("Эзекиль Абаддон", "abaddon.jpg");
+		loader.add("Калас Тифон", "typhon.png");
+		loader.add("Некрозий", "necrosius.jpg");
+		loader.add("Джихар", "jihar.jpg");
+		loader.add("Кхарн", "kharn.jpg");
+		
 		loader.load((loader, resources)=> {
 				this.startProject();
 		});
@@ -52,7 +71,7 @@ export default class Main_Container extends Container {
 	}
 	
 	private initialContent(content:string):void {
-		const gap:number = 50;
+		const gap:number = 20;
 		this._contentContainer = new PIXI.Container;
 		this.addChild(this._contentContainer);
 
@@ -73,13 +92,15 @@ export default class Main_Container extends Container {
 		this._personageImage = Sprite.from(content);
 		this._contentContainer.addChild(this._personageImage);
 		let standartWidth = this._personageImage.width;
-		this._personageImage.width = contentBackground.width/5;
+		this._personageImage.width = contentBackground.width/2;
 		this._personageImage.height /=  standartWidth/this._personageImage.width;
+		this._personageImage.x = this._contentContainer.width/2 - this._personageImage.width/2;
+		this._personageImage.y = gap;
 
 		let textContent:string = Content.initialText(content);
 		const contentText:PIXI.Text = new PIXI.Text (textContent, textStyle);
         contentText.x = gap;
-        contentText.y = gap;
+        contentText.y = this._personageImage.height + gap*2;
 		contentText.style.wordWrap = true;
 		contentText.style.wordWrapWidth = contentBackground.width  - gap*2;
         this._contentContainer.addChild(contentText);
