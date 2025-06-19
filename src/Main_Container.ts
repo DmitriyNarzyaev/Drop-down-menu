@@ -97,13 +97,22 @@ export default class Main_Container extends Container {
 			align: 'left'
         });
 			
-		if (content!=" "){
+		if (content!==" "){
 			let personageImage:PIXI.Sprite = PIXI.Sprite.from(content);
 			let standartWidth = personageImage.width;
-			personageImage.width = contentBackground.width/2;
+				if (content==this._startButtonNames[0] ||
+					content==this._startButtonNames[1] ||
+					content==this._startButtonNames[2] ||
+					content==this._startButtonNames[3] ||
+					content==this._startButtonNames[4] ||
+					content==this._startButtonNames[5]){
+					personageImage.width = contentBackground.width;
+				} else {
+					personageImage.width = contentBackground.width/2;
+					personageImage.y = gap;
+				}
 			personageImage.height /=  standartWidth/personageImage.width;
 			personageImage.x = this._contentContainer.width/2 - personageImage.width/2;
-			personageImage.y = gap;
 			this._contentContainer.addChild(personageImage);
 
 			let textContent:string = Content.initialText(content);
