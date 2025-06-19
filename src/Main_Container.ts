@@ -1,5 +1,5 @@
 import Container = PIXI.Container;
-import { Graphics, Loader, Sprite, TextStyle } from "pixi.js";
+import { Graphics, TextStyle } from "pixi.js";
 import Button from "./Button";
 import Content from "./Content";
 
@@ -11,8 +11,6 @@ export default class Main_Container extends Container {
 	private _subButtonsContainer:PIXI.Container;
 	private _buttonWidth:number = window.outerWidth/4.5;
 	private _buttonHeight:number = this._buttonWidth/5;
-
-	private _personageImage:Sprite;		//TEST
 
 	private _startButtonNames:string[] = ["Империум", "Эльдар", "Империя Тау", "Хаос", "Орки", "Некроны"];
 	private _subButtonOneNames:string[] = ["Калдор Драйго", "Кайафас Каин", "Стракен", "Данте"	]				//Империум
@@ -27,32 +25,31 @@ export default class Main_Container extends Container {
 		this.pictureLoader();
 	}
 
-	private pictureLoader():void {						//TEST
-		const loader:Loader = new Loader();
-		loader.add("Калдор Драйго", "draigo.jpg");
-		loader.add("Кайафас Каин", "kain.png");
-		loader.add("Стракен", "straken.jpg");
-		loader.add("Данте", "dante.jpg");
+	private pictureLoader():void {
+		const loader:PIXI.Loader = new PIXI.Loader();
+		loader.add("Калдор Драйго", "draigo.jpg")
+			  .add("Кайафас Каин", "kain.png")
+			  .add("Стракен", "straken.jpg")
+			  .add("Данте", "dante.jpg")
 
-		loader.add("Эльдрад Ультран", "ultran.jpg");
-		loader.add("Джайн Зар", "jainzar.jpg");
-		loader.add("Мауган Ра", "mauganra.png");
-		loader.add("Амаллин", "amallyn.jpg");
+			  .add("Эльдрад Ультран", "ultran.jpg")
+			  .add("Джайн Зар", "jainzar.jpg")
+			  .add("Мауган Ра", "mauganra.png")
+			  .add("Амаллин", "amallyn.jpg")
 
-		loader.add("Эль'Миямото", "elmyamoto.jpg");
-		loader.add("О'Шасерра", "oshaserra.png");
-		loader.add("Фарсайт", "farsight.jpg");
+			  .add("Эль'Миямото", "elmyamoto.jpg")
+			  .add("О'Шасерра", "oshaserra.png")
+			  .add("Фарсайт", "farsight.jpg")
 
-		loader.add("Эзекиль Абаддон", "abaddon.jpg");
-		loader.add("Калас Тифон", "typhon.png");
-		loader.add("Некрозий", "necrosius.jpg");
-		loader.add("Джихар", "jihar.jpg");
-		loader.add("Кхарн", "kharn.jpg");
-		
+			  .add("Эзекиль Абаддон", "abaddon.jpg")
+			  .add("Калас Тифон", "typhon.png")
+			  .add("Некрозий", "necrosius.jpg")
+			  .add("Джихар", "jihar.jpg")
+			  .add("Кхарн", "kharn.jpg");
+
 		loader.load((loader, resources)=> {
 				this.startProject();
 		});
-		loader.load();
 	}
 
 	private startProject():void {
@@ -60,7 +57,7 @@ export default class Main_Container extends Container {
 			this._buttonsContainer = new PIXI.Container;
 			this.addChild(this._buttonsContainer);
 		this.initialButtons(this._buttonsContainer, this._startButtonNames, false);
-		this.initialContent("");
+		this.initialContent(" ");
 	}
 
 	private initialBackground():void {
@@ -88,23 +85,25 @@ export default class Main_Container extends Container {
             fill: ['#000000'],
 			align: 'left'
         });
+			
+		if (content!=" "){
+			let personageImage:PIXI.Sprite = PIXI.Sprite.from(content);
+			let standartWidth = personageImage.width;
+			personageImage.width = contentBackground.width/2;
+			personageImage.height /=  standartWidth/personageImage.width;
+			personageImage.x = this._contentContainer.width/2 - personageImage.width/2;
+			personageImage.y = gap;
+			this._contentContainer.addChild(personageImage);
 
-		this._personageImage = Sprite.from(content);
-		this._contentContainer.addChild(this._personageImage);
-		let standartWidth = this._personageImage.width;
-		this._personageImage.width = contentBackground.width/2;
-		this._personageImage.height /=  standartWidth/this._personageImage.width;
-		this._personageImage.x = this._contentContainer.width/2 - this._personageImage.width/2;
-		this._personageImage.y = gap;
-
-		let textContent:string = Content.initialText(content);
-		const contentText:PIXI.Text = new PIXI.Text (textContent, textStyle);
-        contentText.x = gap;
-        contentText.y = this._personageImage.height + gap*2;
-		contentText.style.wordWrap = true;
-		contentText.style.wordWrapWidth = contentBackground.width  - gap*2;
-        this._contentContainer.addChild(contentText);
-		console.log("content button " + contentText as string);
+			let textContent:string = Content.initialText(content);
+			const contentText:PIXI.Text = new PIXI.Text (textContent, textStyle);
+			contentText.x = gap;
+			contentText.y = personageImage.height + gap*2;
+			contentText.style.wordWrap = true;
+			contentText.style.wordWrapWidth = contentBackground.width  - gap*2;
+			this._contentContainer.addChild(contentText);
+			console.log("content button " + contentText as string);
+		};
 	}
 
 	private removeContent():void {
