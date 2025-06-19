@@ -12,7 +12,7 @@ export default class Main_Container extends Container {
 	private _buttonWidth:number = window.outerWidth/4.5;
 	private _buttonHeight:number = this._buttonWidth/5;
 
-	private _startButtonNames:string[] = ["Империум", "Эльдар", "Империя Тау", "Хаос", "Орки", "Некроны"];
+	private _startButtonNames:string[] = ["Империум", "Эльдар", "Тау", "Хаос", "Орки", "Некроны"];
 	private _subButtonOneNames:string[] = ["Калдор Драйго", "Кайафас Каин", "Стракен", "Данте"	]				//Империум
 	private _subButtonTwoNames:string[] = ["Эльдрад Ультран", "Джайн Зар", "Мауган Ра", "Амаллин" ]				//Эльдар
 	private _subButtonThreeNames:string[] = ["Эль'Миямото", "О'Шасерра", "Фарсайт"]								//Тау
@@ -27,28 +27,39 @@ export default class Main_Container extends Container {
 
 	private pictureLoader():void {
 		const loader:PIXI.Loader = new PIXI.Loader();
-		loader.add("Калдор Драйго", "draigo.jpg")
-			  .add("Кайафас Каин", "kain.png")
-			  .add("Стракен", "straken.jpg")
-			  .add("Данте", "dante.jpg")
-
-			  .add("Эльдрад Ультран", "ultran.jpg")
-			  .add("Джайн Зар", "jainzar.jpg")
-			  .add("Мауган Ра", "mauganra.png")
-			  .add("Амаллин", "amallyn.jpg")
-
-			  .add("Эль'Миямото", "elmyamoto.jpg")
-			  .add("О'Шасерра", "oshaserra.png")
-			  .add("Фарсайт", "farsight.jpg")
-
-			  .add("Эзекиль Абаддон", "abaddon.jpg")
-			  .add("Калас Тифон", "typhon.png")
-			  .add("Некрозий", "necrosius.jpg")
-			  .add("Джихар", "jihar.jpg")
-			  .add("Кхарн", "kharn.jpg");
+		loader
+			.add(this._startButtonNames[0], "imperium.jpg")			//0
+			.add(this._startButtonNames[1], "eldar.jpg")
+			.add(this._startButtonNames[2], "tau.jpg")
+			.add(this._startButtonNames[3], "chaos.jpg")
+			.add(this._startButtonNames[4], "orks.jpg")
+			.add(this._startButtonNames[5], "necrons.jpg")
+			.add(this._subButtonOneNames[0], "draigo.jpg")			//1
+			.add(this._subButtonOneNames[1], "kain.jpg")
+			.add(this._subButtonOneNames[2], "straken.jpg")
+			.add(this._subButtonOneNames[3], "dante.jpg")
+			.add(this._subButtonTwoNames[0], "ultran.jpg")			//2
+			.add(this._subButtonTwoNames[1], "jainzar.jpg")
+			.add(this._subButtonTwoNames[2], "mauganra.jpg")
+			.add(this._subButtonTwoNames[3], "amallyn.jpg")
+			.add(this._subButtonThreeNames[0], "elmyamoto.jpg")		//3
+			.add(this._subButtonThreeNames[1], "oshaserra.jpg")
+			.add(this._subButtonThreeNames[2], "farsight.jpg")
+			.add(this._subButtonFourNames[0], "abaddon.jpg")		//4
+			.add(this._subButtonFourNames[1], "typhon.jpg")
+			.add(this._subButtonFourNames[2], "necrosius.jpg")
+			.add(this._subButtonFourNames[3], "jihar.jpg")
+			.add(this._subButtonFourNames[4], "kharn.jpg")
+			.add(this._subButtonFiveNames[0], "grog.jpg")			//5
+			.add(this._subButtonFiveNames[1], "wazdakka.jpg")
+			.add(this._subButtonFiveNames[2], "dok.jpg")
+			.add(this._subButtonFiveNames[3], "snagrod.jpg")
+			.add(this._subButtonSixNames[0], "seras.jpg")			//6
+			.add(this._subButtonSixNames[1], "anrakyr.jpg")
+			.add(this._subButtonSixNames[2], "orikan.jpg")
 
 		loader.load((loader, resources)=> {
-				this.startProject();
+			this.startProject();
 		});
 	}
 
