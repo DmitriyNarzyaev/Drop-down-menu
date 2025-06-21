@@ -2,6 +2,7 @@ import Container = PIXI.Container;
 import { Graphics, TextStyle } from "pixi.js";
 import Button from "./Button";
 import Content from "./Content";
+import Scrollbar from "./Scrollbar";
 
 export default class Main_Container extends Container {
 	public static readonly WINDOW_WIDTH:number = window.outerWidth;
@@ -124,6 +125,13 @@ export default class Main_Container extends Container {
 			this._contentContainer.addChild(contentText);
 			console.log("content button " + contentText as string);
 		};
+
+		if (this._contentContainer.height > Main_Container.WINDOW_HEIGHT) {
+			let scrollbar: Scrollbar = new Scrollbar(Main_Container.WINDOW_WIDTH, Main_Container.WINDOW_HEIGHT);
+			scrollbar.x = this._contentContainer.x - scrollbar.width;
+			this._contentContainer.addChild(scrollbar);
+		}
+		
 	}
 
 	private removeContent():void {
