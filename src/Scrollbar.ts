@@ -1,8 +1,8 @@
 import Container = PIXI.Container;
 
 export default class Scrollbar extends Container {
+    public thumb :PIXI.Graphics;
     private _track:PIXI.Graphics;
-    private _thumb :PIXI.Graphics;
     private _trackWidth:number;
     private _trackHeight:number;
 
@@ -25,14 +25,13 @@ export default class Scrollbar extends Container {
 
     private createThumb():void {
         let thumbHeight = 50;           //TEST
-        this._thumb = new PIXI.Graphics;
-        this._thumb
+        this.thumb = new PIXI.Graphics;
+        this.thumb
             .lineStyle(1, 0x000000, 1, 0)
             .beginFill(0x447700)
             .drawRect(0, 0, this._trackWidth, thumbHeight);
-        this.addChild(this._thumb);
-        this._thumb.interactive = true;
-        this._thumb.buttonMode = true;
-
+            this.thumb.interactive = true;
+            this.thumb.buttonMode = true;
+        this.addChild(this.thumb);
 	}
 }

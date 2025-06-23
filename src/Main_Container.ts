@@ -1,5 +1,5 @@
 import Container = PIXI.Container;
-import { Graphics, TextStyle } from "pixi.js";
+import { Graphics, InteractionEvent, IPoint, TextStyle } from "pixi.js";
 import Button from "./Button";
 import Content from "./Content";
 import Scrollbar from "./Scrollbar";
@@ -12,6 +12,8 @@ export default class Main_Container extends Container {
 	private _subButtonsContainer:PIXI.Container;
 	private _buttonWidth:number = window.outerWidth/4.5;
 	private _buttonHeight:number = this._buttonWidth/5;
+	private _scrollbar: Scrollbar;
+	private _scrollbarTouchDownY:number;
 
 	private _startButtonNames:string[] = ["Империум", "Эльдар", "Тау", "Хаос", "Орки", "Некроны"];
 	private _subButtonOneNames:string[] = ["Калдор Драйго", "Кайафас Каин", "Стракен", "Данте"	]				//Империум
@@ -122,16 +124,41 @@ export default class Main_Container extends Container {
 			contentText.y = personageImage.height + gap*2;
 			contentText.style.wordWrap = true;
 			contentText.style.wordWrapWidth = contentBackground.width  - gap*2;
+			this._contentContainer.interactive = true;
 			this._contentContainer.addChild(contentText);
 			console.log("content button " + contentText as string);
 		};
 
 		if (this._contentContainer.height > Main_Container.WINDOW_HEIGHT) {
-			let scrollbar: Scrollbar = new Scrollbar(Main_Container.WINDOW_WIDTH, Main_Container.WINDOW_HEIGHT);
-			scrollbar.x = this._contentContainer.x - scrollbar.width;
-			this._contentContainer.addChild(scrollbar);
+			this._scrollbar = new Scrollbar(Main_Container.WINDOW_WIDTH, Main_Container.WINDOW_HEIGHT);
+			this._scrollbar.x = this._contentContainer.x - this._scrollbar.width;
+			this._contentContainer.addChild(this._scrollbar);
+			this._scrollbar.thumb.addListener('pointerdown', this.scrollbarPointerdown, this);
+			this._contentContainer.addListener('pointerup', this.scrollbarPointerup, this);
 		}
-		
+	}
+
+	private scrollbarPointerdown(event:InteractionEvent):void {
+		this._scrollbarTouchDownY = this._scrollbar.toLocal(event.data.global).y;
+		this._contentContainer.addListener('pointermove', this.scrollbarOnDragMove, this);
+		this._scrollbar.thumb.tint =  0x80baf3;
+	}
+
+    private scrollbarOnDragMove(event:InteractionEvent):void {
+		const newPosition:IPoint = event.data.getLocalPosition(this);
+		this._scrollbar.thumb.y = newPosition.y;
+        if (this._scrollbar.thumb.y <= 0) {
+			this._scrollbar.thumb.y = 0;
+		}
+		if (this._scrollbar.thumb.y >= Main_Container.WINDOW_HEIGHT - this._scrollbar.thumb.height) {
+			this._scrollbar.thumb.y = Main_Container.WINDOW_HEIGHT - this._scrollbar.thumb.height;
+		}
+	}
+
+    private scrollbarPointerup():void {
+		this._scrollbarTouchDownY = 0;
+		this._contentContainer.removeListener('pointermove', this.scrollbarOnDragMove, this);
+		this._scrollbar.thumb.tint =  0xffffff;
 	}
 
 	private removeContent():void {
