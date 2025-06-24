@@ -140,8 +140,7 @@ export default class Main_Container extends Container {
 			this.addChild(this._scrollbar);
 			this._scrollbar.thumb.addListener('pointerdown', this.scrollbarPointerdown, this);
 			this._scrollbar.thumb.addListener('pointerup', this.scrollbarPointerup, this);
-			this._contentContainer.addListener('pointerup', this.scrollbarPointerup, this);		//?
-			this._background.addListener('pointerup', this.scrollbarPointerup, this);			//?
+			this._scrollbar.thumb.addListener('pointerupoutside', this.scrollbarPointerup, this);
 		}
 	}
 
