@@ -130,7 +130,8 @@ export default class Main_Container extends Container {
 		};
 
 		if (this._contentContainer.height > Main_Container.WINDOW_HEIGHT) {
-			this._scrollbar = new Scrollbar(Main_Container.WINDOW_WIDTH, Main_Container.WINDOW_HEIGHT);
+			const thumbHeight:number = Main_Container.WINDOW_HEIGHT * (Main_Container.WINDOW_HEIGHT / this._contentContainer.height);
+			this._scrollbar = new Scrollbar(Main_Container.WINDOW_WIDTH, Main_Container.WINDOW_HEIGHT, thumbHeight);
 			this._scrollbar.x = this._contentContainer.x - this._scrollbar.width;
 			this._contentContainer.addChild(this._scrollbar);
 			this._scrollbar.thumb.addListener('pointerdown', this.scrollbarPointerdown, this);
@@ -138,15 +139,16 @@ export default class Main_Container extends Container {
 		}
 	}
 
-	private scrollbarPointerdown(event:InteractionEvent):void {
-		this._scrollbarTouchDownY = this._scrollbar.toLocal(event.data.global).y;
+	private scrollbarPointerdown(event:InteractionEvent):void {							//start
+		this._scrollbarTouchDownY = this._scrollbar.thumb.toLocal(event.data.global).y;
 		this._contentContainer.addListener('pointermove', this.scrollbarOnDragMove, this);
 		this._scrollbar.thumb.tint =  0x80baf3;
 	}
 
     private scrollbarOnDragMove(event:InteractionEvent):void {
-		const newPosition:IPoint = event.data.getLocalPosition(this);
-		this._scrollbar.thumb.y = newPosition.y;
+		const newPosition:IPoint = event.data.getLocalPosition(this._scrollbar);
+		this._scrollbar.thumb.y = newPosition.y -  this._scrollbarTouchDownY;
+
         if (this._scrollbar.thumb.y <= 0) {
 			this._scrollbar.thumb.y = 0;
 		}
