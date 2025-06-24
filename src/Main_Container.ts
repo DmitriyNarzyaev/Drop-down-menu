@@ -7,6 +7,7 @@ import Scrollbar from "./Scrollbar";
 export default class Main_Container extends Container {
 	public static readonly WINDOW_WIDTH:number = window.outerWidth;
 	public static readonly WINDOW_HEIGHT:number = window.innerHeight;
+	private _background: Graphics;
 	private _contentContainer:PIXI.Container;
 	private _buttonsContainer:PIXI.Container;
 	private _subButtonsContainer:PIXI.Container;
@@ -75,10 +76,11 @@ export default class Main_Container extends Container {
 	}
 
 	private initialBackground():void {
-		let background: Graphics = new Graphics;
-		background.beginFill(0x00ff48);
-		background.drawRect(0, 0, Main_Container.WINDOW_WIDTH, Main_Container.WINDOW_HEIGHT);
-		this.addChild(background);
+		this._background = new Graphics;
+		this._background.beginFill(0x00ff48);
+		this._background.drawRect(0, 0, Main_Container.WINDOW_WIDTH, Main_Container.WINDOW_HEIGHT);
+		this._background.interactive = true;
+		this.addChild(this._background);
 	}
 	
 	private initialContent(content:string):void {
@@ -127,44 +129,56 @@ export default class Main_Container extends Container {
 			this._contentContainer.interactive = true;
 			this._contentContainer.addChild(contentText);
 			console.log("content button " + contentText as string);
+
+			contentBackground.height = this._contentContainer.height;
 		};
 
 		if (this._contentContainer.height > Main_Container.WINDOW_HEIGHT) {
 			const thumbHeight:number = Main_Container.WINDOW_HEIGHT * (Main_Container.WINDOW_HEIGHT / this._contentContainer.height);
 			this._scrollbar = new Scrollbar(Main_Container.WINDOW_WIDTH, Main_Container.WINDOW_HEIGHT, thumbHeight);
-			this._scrollbar.x = this._contentContainer.x - this._scrollbar.width;
-			this._contentContainer.addChild(this._scrollbar);
+			this._scrollbar.x = Main_Container.WINDOW_WIDTH - this._scrollbar.width;
+			this.addChild(this._scrollbar);
 			this._scrollbar.thumb.addListener('pointerdown', this.scrollbarPointerdown, this);
-			this._contentContainer.addListener('pointerup', this.scrollbarPointerup, this);
+			this._scrollbar.thumb.addListener('pointerup', this.scrollbarPointerup, this);
+			this._contentContainer.addListener('pointerup', this.scrollbarPointerup, this);		//?
+			this._background.addListener('pointerup', this.scrollbarPointerup, this);			//?
 		}
 	}
 
-	private scrollbarPointerdown(event:InteractionEvent):void {							//start
+	private scrollbarPointerdown(event:InteractionEvent):void {
 		this._scrollbarTouchDownY = this._scrollbar.thumb.toLocal(event.data.global).y;
-		this._contentContainer.addListener('pointermove', this.scrollbarOnDragMove, this);
+		this._scrollbar.thumb.addListener('pointermove', this.scrollbarOnDragMove, this);
 		this._scrollbar.thumb.tint =  0x80baf3;
 	}
 
     private scrollbarOnDragMove(event:InteractionEvent):void {
 		const newPosition:IPoint = event.data.getLocalPosition(this._scrollbar);
 		this._scrollbar.thumb.y = newPosition.y -  this._scrollbarTouchDownY;
+		this._contentContainer.y = -this._scrollbar.thumb.y;
 
         if (this._scrollbar.thumb.y <= 0) {
 			this._scrollbar.thumb.y = 0;
-		}
-		if (this._scrollbar.thumb.y >= Main_Container.WINDOW_HEIGHT - this._scrollbar.thumb.height) {
+		} else if (this._scrollbar.thumb.y >= Main_Container.WINDOW_HEIGHT - this._scrollbar.thumb.height) {
 			this._scrollbar.thumb.y = Main_Container.WINDOW_HEIGHT - this._scrollbar.thumb.height;
+		}
+
+		if (this._contentContainer.y >= 0) {
+			this._contentContainer.y = 0;
+		} else if (this._contentContainer.y <= Main_Container.WINDOW_HEIGHT - this._contentContainer.height) {
+			this._contentContainer.y = Main_Container.WINDOW_HEIGHT - this._contentContainer.height;
 		}
 	}
 
     private scrollbarPointerup():void {
 		this._scrollbarTouchDownY = 0;
-		this._contentContainer.removeListener('pointermove', this.scrollbarOnDragMove, this);
+		this._scrollbar.thumb.removeListener('pointermove', this.scrollbarOnDragMove, this);
 		this._scrollbar.thumb.tint =  0xffffff;
 	}
 
 	private removeContent():void {
 		this.removeChild(this._contentContainer);
+		this.removeChild(this._scrollbar);
+		
 	}
 
 	private initialButtons(container:PIXI.Container, buttonNames:string[], sub:boolean):void {
