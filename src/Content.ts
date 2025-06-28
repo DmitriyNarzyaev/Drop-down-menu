@@ -65,7 +65,9 @@ export default class Content extends Container {
         " благородным порывом, он собрал огромные легионы и отправился к звёздам, чтобы вновь объединить династии. С того дня он странствует по галактике, истребляя"+
         " бесчисленных чужеродных захватчиков и пробуждая один спящий мир-гробницу за другим.";
     private static orikan:string = "        Орикан \n\nМастер астромантии, криптек Некрона. Орикан обладает хрономантическими способностями, позволяющими ему видеть"+
-        " события до того, как они произойдут, и изменять некоторые события прошлого, чтобы уклоняться от урона или же самому наносить разрушительные удары.";
+        " события до того, как они произойдут, и изменять некоторые события прошлого, чтобы уклоняться от урона или же самому наносить разрушительные удары."
+    private static test:string = "        TEST \n\n1 test \n2 test \n3 test \n4 test \n5 test \n6 test \n7 test \n8 test \n9 test "+
+    "\n11 test \n12 test \n13 test \n14 test \n15 test \n16 test \n17 test \n18 test \n19 test \n20 test";
 
     public static initialText(text:string):string {
         let returnText:string;
@@ -125,6 +127,8 @@ export default class Content extends Container {
             returnText = Content.anrakyr;
         } else if (text == "Орикан") {
             returnText = Content.orikan;
+        } else if (text == "TEST") {
+            returnText = Content.test;
         }
         return returnText;
     }

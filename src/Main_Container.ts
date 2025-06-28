@@ -5,7 +5,7 @@ import Content from "./Content";
 import Scrollbar from "./Scrollbar";
 
 export default class Main_Container extends Container {
-	public static readonly WINDOW_WIDTH:number = window.outerWidth;
+	public static readonly WINDOW_WIDTH:number = window.innerWidth;
 	public static readonly WINDOW_HEIGHT:number = window.innerHeight;
 	private _background: Graphics;
 	private _contentContainer:PIXI.Container;
@@ -22,7 +22,7 @@ export default class Main_Container extends Container {
 	private _subButtonThreeNames:string[] = ["Эль'Миямото", "О'Шасерра", "Фарсайт"]								//Тау
 	private _subButtonFourNames:string[] = ["Эзекиль Абаддон", "Калас Тифон", "Некрозий", "Джихар", "Кхарн"]	//Хаос
 	private _subButtonFiveNames:string[] = ["Грог Железнозуб", "Ваздакка Гуцмек", "Док Гротсник", "Снагрод"]	//Орки
-	private _subButtonSixNames:string[] = ["Иллюминор Серас", "Анракир", "Орикан"]								//Некроны
+	private _subButtonSixNames:string[] = ["Иллюминор Серас", "Анракир", "Орикан", "TEST"]								//Некроны
 
 	constructor() {
 		super();
@@ -94,7 +94,7 @@ export default class Main_Container extends Container {
 			.drawRect(0, 0, Main_Container.WINDOW_WIDTH/2, Main_Container.WINDOW_HEIGHT);
 		this._contentContainer.addChild(contentBackground);
 		this._contentContainer.x = Main_Container.WINDOW_WIDTH/2;
-
+		this._contentContainer.y = 0;
 		let textStyle:TextStyle = new PIXI.TextStyle ({
             fontFamily: 'Arial',
             fontSize: contentBackground.width/25,
@@ -153,7 +153,7 @@ export default class Main_Container extends Container {
     private scrollbarOnDragMove(event:InteractionEvent):void {
 		const newPosition:IPoint = event.data.getLocalPosition(this._scrollbar);
 		this._scrollbar.thumb.y = newPosition.y -  this._scrollbarTouchDownY;
-		this._contentContainer.y = -this._scrollbar.thumb.y;
+		this._contentContainer.y = -this._scrollbar.thumb.y * (Main_Container.WINDOW_HEIGHT/this._scrollbar.thumb.height);
 
         if (this._scrollbar.thumb.y <= 0) {
 			this._scrollbar.thumb.y = 0;
