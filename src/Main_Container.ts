@@ -15,6 +15,7 @@ export default class Main_Container extends Container {
 	private _buttonHeight:number = this._buttonWidth/5;
 	private _scrollbar: Scrollbar;
 	private _scrollbarTouchDownY:number;
+	private _wheelHandler:()=>void;
 
 	private _startButtonNames:string[] = ["Империум", "Эльдар", "Тау", "Хаос", "Орки", "Некроны"];
 	private _subButtonOneNames:string[] = ["Калдор Драйго", "Кайафас Каин", "Стракен", "Данте"	]				//Империум
@@ -27,6 +28,7 @@ export default class Main_Container extends Container {
 	constructor() {
 		super();
 		this.pictureLoader();
+		this._wheelHandler = Main_Container.addEvent(document, "wheel", this.movingContentForWheel.bind(this));
 	}
 
 	private pictureLoader():void {
@@ -153,9 +155,16 @@ export default class Main_Container extends Container {
     private scrollbarOnDragMove(event:InteractionEvent):void {
 		const newPosition:IPoint = event.data.getLocalPosition(this._scrollbar);
 		this._scrollbar.thumb.y = newPosition.y -  this._scrollbarTouchDownY;
-		this._contentContainer.y = -this._scrollbar.thumb.y * (Main_Container.WINDOW_HEIGHT/this._scrollbar.thumb.height);
+		this.contentContainerMoving();
+		this.contentLimits();
+	}
 
-        if (this._scrollbar.thumb.y <= 0) {
+	private contentContainerMoving():void {
+		this._contentContainer.y = -this._scrollbar.thumb.y * (Main_Container.WINDOW_HEIGHT/this._scrollbar.thumb.height);
+	}
+
+	private contentLimits():void {
+		if (this._scrollbar.thumb.y <= 0) {
 			this._scrollbar.thumb.y = 0;
 		} else if (this._scrollbar.thumb.y >= Main_Container.WINDOW_HEIGHT - this._scrollbar.thumb.height) {
 			this._scrollbar.thumb.y = Main_Container.WINDOW_HEIGHT - this._scrollbar.thumb.height;
@@ -222,6 +231,28 @@ export default class Main_Container extends Container {
 	}
 
 	private buttonTouchFunctions(button:Button):void {					//TEST
+	}
+
+	private movingContentForWheel(wheelEvent:WheelEvent):void {
+		const delta:number = 15*(wheelEvent.deltaY > 0 ? 1 : -1);
+		if (wheelEvent.deltaY > 0){
+			this._scrollbar.thumb.y += Math.abs(delta);
+		} else {
+			this._scrollbar.thumb.y -= Math.abs(delta);
+		}
+		this.contentContainerMoving();
+		this.contentLimits();
+	}
+
+	private static addEvent(object:any, type:string, callback:() => void):() => void {
+		if (object.addEventListener) {
+			object.addEventListener(type, callback, false);
+		} else if (object.attachEvent) {
+			object.attachEvent("on" + type, callback);
+		} else {
+			object["on" + type] = callback;
+		}
+		return callback;
 	}
 
 	private startSubButtonFunction(button:Button):void {
