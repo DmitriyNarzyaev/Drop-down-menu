@@ -1,10 +1,6 @@
-# PixiJS + Webpack starter
-Easy deployment project with:
+# Drop-down menu
 
-* PixiJS
-* Webpack
-* TypeScript
-* Babel
+You can start this by clicking on the link https://dmitriynarzyaev.github.io/Drop-down-menu/
 
 ## Deployment
 * Download and install Node.js and npm (https://www.npmjs.com/get-npm)
