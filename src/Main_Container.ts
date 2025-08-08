@@ -7,7 +7,7 @@ import Scrollbar from "./Scrollbar";
 export default class Main_Container extends Container {
 	public static readonly WINDOW_WIDTH:number = window.innerWidth;
 	public static readonly WINDOW_HEIGHT:number = window.innerHeight;
-	private _background: Graphics;
+	private _background:Graphics;
 	private _contentContainer:PIXI.Container;
 	private _buttonsContainer:PIXI.Container;
 	private _subButtonsContainer:PIXI.Container;
@@ -64,7 +64,7 @@ export default class Main_Container extends Container {
 			.add(this._subButtonSixNames[1], "anrakyr.jpg")
 			.add(this._subButtonSixNames[2], "orikan.jpg")
 
-		loader.load((loader, resources)=> {
+		loader.load(()=> {
 			this.startProject();
 		});
 	}
@@ -130,10 +130,9 @@ export default class Main_Container extends Container {
 			contentText.style.wordWrapWidth = contentBackground.width  - gap*2;
 			this._contentContainer.interactive = true;
 			this._contentContainer.addChild(contentText);
-			console.log("content button " + contentText as string);
 
 			contentBackground.height = this._contentContainer.height;
-		};
+		}
 
 		if (this._contentContainer.height > Main_Container.WINDOW_HEIGHT) {
 			const thumbHeight:number = Main_Container.WINDOW_HEIGHT * (Main_Container.WINDOW_HEIGHT / this._contentContainer.height);
@@ -207,7 +206,6 @@ export default class Main_Container extends Container {
 				() => {this.buttonClickFunctions(button);},
 				() => {this.buttonMouseOverFunctions(button);},
 				() => {this.buttonMouseOutFunctions(button);},
-				() => {this.buttonTouchFunctions(button);}
 			);
 			button.x = buttonX;
 			button.y = buttonY;
@@ -219,7 +217,6 @@ export default class Main_Container extends Container {
 	private buttonClickFunctions(button:Button):void {
 		this.removeContent();
 		this.initialContent(button.buttonName);
-		console.log("click button " + button.buttonName);
 	}
 
 	private buttonMouseOverFunctions(button:Button):void {
@@ -228,9 +225,6 @@ export default class Main_Container extends Container {
 
 	private buttonMouseOutFunctions(button:Button):void {
 		button.removeChild(this._subButtonsContainer);
-	}
-
-	private buttonTouchFunctions(button:Button):void {					//TEST
 	}
 
 	private movingContentForWheel(wheelEvent:WheelEvent):void {

@@ -2,8 +2,8 @@ import { TextStyle } from "pixi.js";
 import Container = PIXI.Container;
 
 export default class Button extends Container {
-    private _background:PIXI.Graphics;
-    private _textStyle:TextStyle;
+    private readonly _background:PIXI.Graphics;
+    private readonly _textStyle:TextStyle;
     private readonly _clickCallback:()=>void;
     private readonly _mouseOverCallback:()=>void;
     private readonly _mouseOutCallback:()=>void;

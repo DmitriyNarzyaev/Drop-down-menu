@@ -3,9 +3,9 @@ import Container = PIXI.Container;
 export default class Scrollbar extends Container {
     public thumb :PIXI.Graphics;
     private _track:PIXI.Graphics;
-    private _trackWidth:number;
-    private _trackHeight:number;
-    private _thumbHeight:number;
+    private readonly _trackWidth:number;
+    private readonly _trackHeight:number;
+    private readonly _thumbHeight:number;
 
     constructor(windowWidth:number, windowHeight:number, thumbHeight:number){
         super();
