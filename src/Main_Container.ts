@@ -7,6 +7,7 @@ import Scrollbar from "./Scrollbar";
 export default class Main_Container extends Container {
 	public static readonly WINDOW_WIDTH:number = window.innerWidth;
 	public static readonly WINDOW_HEIGHT:number = window.innerHeight;
+	private _loadingWindowContainer:PIXI.Container;
 	private _background:Graphics;
 	private _contentContainer:PIXI.Container;
 	private _buttonsContainer:PIXI.Container;
@@ -27,8 +28,26 @@ export default class Main_Container extends Container {
 
 	constructor() {
 		super();
+		this.loadingWindow();
 		this.pictureLoader();
 		this._wheelHandler = Main_Container.addEvent(document, "wheel", this.movingContentForWheel.bind(this));
+	}
+
+	private loadingWindow():void {
+		this._loadingWindowContainer = new PIXI.Container;
+		this.addChild(this._loadingWindowContainer);
+
+		const textStyle = new PIXI.TextStyle ({
+			fontFamily: 'Arial',
+			fontSize: Main_Container.WINDOW_HEIGHT/30,
+			fontWeight: 'bold',
+			fill: ['#999999'],
+		});
+
+		const loadingText:PIXI.Text = new PIXI.Text ("Loading", textStyle);
+		loadingText.x = (Main_Container.WINDOW_WIDTH - loadingText.width)/2;
+		loadingText.y = (Main_Container.WINDOW_HEIGHT - loadingText.height)/2;
+		this._loadingWindowContainer.addChild(loadingText);
 	}
 
 	private pictureLoader():void {
@@ -65,6 +84,8 @@ export default class Main_Container extends Container {
 			.add(this._subButtonSixNames[2], "orikan.jpg")
 
 		loader.load(()=> {
+			this.removeChild(this._loadingWindowContainer);
+			this._loadingWindowContainer = null;
 			this.startProject();
 		});
 	}

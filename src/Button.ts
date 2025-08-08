@@ -54,7 +54,6 @@ export default class Button extends Container {
 
         if (clickCallback) {
 			this._background.addListener('pointertap', this.pointerTabHandler, this);
-			//this._background.addListener('touchstart', this.pointerTabHandler, false);
 		}
 
         if (mouseOverCallback) {
