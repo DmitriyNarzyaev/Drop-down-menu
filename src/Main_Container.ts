@@ -17,14 +17,13 @@ export default class Main_Container extends Container {
 	private _scrollbar: Scrollbar;
 	private _scrollbarTouchDownY:number;
 	private _wheelHandler:()=>void;
-
 	private _startButtonNames:string[] = ["Империум", "Эльдар", "Тау", "Хаос", "Орки", "Некроны"];
 	private _subButtonOneNames:string[] = ["Калдор Драйго", "Кайафас Каин", "Стракен", "Данте"	]				//Империум
 	private _subButtonTwoNames:string[] = ["Эльдрад Ультран", "Джайн Зар", "Мауган Ра", "Амаллин" ]				//Эльдар
 	private _subButtonThreeNames:string[] = ["Эль'Миямото", "О'Шасерра", "Фарсайт"]								//Тау
 	private _subButtonFourNames:string[] = ["Эзекиль Абаддон", "Калас Тифон", "Некрозий", "Джихар", "Кхарн"]	//Хаос
 	private _subButtonFiveNames:string[] = ["Грог Железнозуб", "Ваздакка Гуцмек", "Док Гротсник", "Снагрод"]	//Орки
-	private _subButtonSixNames:string[] = ["Иллюминор Серас", "Анракир", "Орикан", "TEST"]								//Некроны
+	private _subButtonSixNames:string[] = ["Иллюминор Серас", "Анракир", "Орикан", "TEST"]						//Некроны
 
 	constructor() {
 		super();
@@ -32,6 +31,8 @@ export default class Main_Container extends Container {
 		this.pictureLoader();
 		this._wheelHandler = Main_Container.addEvent(document, "wheel", this.movingContentForWheel.bind(this));
 	}
+
+	private LoadingInterval:any;
 
 	private loadingWindow():void {
 		this._loadingWindowContainer = new PIXI.Container;
@@ -44,10 +45,23 @@ export default class Main_Container extends Container {
 			fill: ['#999999'],
 		});
 
-		const loadingText:PIXI.Text = new PIXI.Text ("Loading", textStyle);
+		const loadingText:PIXI.Text = new PIXI.Text ("", textStyle);
 		loadingText.x = (Main_Container.WINDOW_WIDTH - loadingText.width)/2;
 		loadingText.y = (Main_Container.WINDOW_HEIGHT - loadingText.height)/2;
 		this._loadingWindowContainer.addChild(loadingText);
+
+		this.LoadingInterval = setInterval(() => {
+			console.log("///");
+			if (loadingText.text == "Loading.") {
+				loadingText.text = "Loading.."
+			} else if (loadingText.text == "Loading..") {
+				loadingText.text = "Loading..."
+			} else if (loadingText.text == "Loading...") {
+				loadingText.text = "Loading."
+			} else {
+				loadingText.text = "Loading."
+			}
+		}, 500);
 	}
 
 	private pictureLoader():void {
@@ -84,6 +98,7 @@ export default class Main_Container extends Container {
 			.add(this._subButtonSixNames[2], "orikan.jpg")
 
 		loader.load(()=> {
+			clearInterval(this.LoadingInterval);
 			this.removeChild(this._loadingWindowContainer);
 			this._loadingWindowContainer = null;
 			this.startProject();
@@ -151,7 +166,6 @@ export default class Main_Container extends Container {
 			contentText.style.wordWrapWidth = contentBackground.width  - gap*2;
 			this._contentContainer.interactive = true;
 			this._contentContainer.addChild(contentText);
-
 			contentBackground.height = this._contentContainer.height;
 		}
 
@@ -206,7 +220,6 @@ export default class Main_Container extends Container {
 	private removeContent():void {
 		this.removeChild(this._contentContainer);
 		this.removeChild(this._scrollbar);
-		
 	}
 
 	private initialButtons(container:PIXI.Container, buttonNames:string[], sub:boolean):void {
